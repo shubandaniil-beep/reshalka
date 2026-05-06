@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎓 Решатель Задач</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
@@ -24,457 +20,319 @@
         .container {
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 800px;
             width: 100%;
             padding: 40px;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        h1 { text-align: center; font-size: 2.2em; color: #333; margin-bottom: 8px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
 
-        .header h1 {
-            font-size: 2.5em;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: #666;
-            font-size: 1.1em;
-        }
-
-        .api-key-section {
-            background: #e8f4f8;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
+        .api-box {
+            background: #f0f8ff;
             border: 2px solid #0099cc;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
         }
-
-        .api-key-section h3 {
-            color: #0099cc;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-
-        .api-key-section p {
-            color: #666;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-        }
-
-        .api-key-section a {
-            color: #0099cc;
-            text-decoration: underline;
-        }
-
-        .api-key-input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        #apiKeyInput {
+        .api-box h3 { color: #0099cc; margin-bottom: 8px; }
+        .api-box a { color: #0099cc; }
+        .api-row { display: flex; gap: 8px; margin-top: 10px; }
+        .api-row input {
             flex: 1;
-            padding: 12px;
+            padding: 10px 14px;
             border: 2px solid #ccc;
             border-radius: 8px;
-            font-size: 0.9em;
             font-family: monospace;
-        }
-
-        #apiKeyInput:focus {
-            outline: none;
-            border-color: #0099cc;
-        }
-
-        .api-btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        #saveKeyBtn {
-            background: #0099cc;
-            color: white;
-        }
-
-        #saveKeyBtn:hover {
-            background: #0077aa;
-        }
-
-        #clearKeyBtn {
-            background: #ccc;
-            color: #333;
-        }
-
-        #clearKeyBtn:hover {
-            background: #aaa;
-        }
-
-        #keyStatus {
-            margin-top: 10px;
             font-size: 0.9em;
-            padding: 10px;
-            border-radius: 6px;
-            display: none;
         }
+        .api-row input:focus { outline: none; border-color: #0099cc; }
+        .btn-save { background: #0099cc; color: white; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn-save:hover { background: #007aaa; }
+        #keyMsg { margin-top: 8px; font-size: 0.85em; padding: 8px 12px; border-radius: 6px; display: none; }
+        #keyMsg.ok { background: #d4edda; color: #155724; display: block; }
+        #keyMsg.err { background: #f8d7da; color: #721c24; display: block; }
 
-        #keyStatus.success {
-            background: #d4edda;
-            color: #155724;
-            display: block;
-        }
-
-        #keyStatus.error {
-            background: #f8d7da;
-            color: #721c24;
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
+        .capture-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            border: none;
+            border-radius: 12px;
             font-size: 1.1em;
-            color: #333;
-            margin-bottom: 10px;
-            font-weight: 600;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
         }
+        .capture-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(17,153,142,0.4); }
+        .capture-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
+        label { display: block; font-weight: 600; color: #333; margin-bottom: 8px; }
         textarea {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             border: 2px solid #e0e0e0;
             border-radius: 12px;
             font-size: 1em;
             font-family: inherit;
             resize: vertical;
             min-height: 120px;
-            transition: border-color 0.3s;
         }
+        textarea:focus { outline: none; border-color: #667eea; }
 
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 25px;
-        }
-
-        button {
+        .btns { display: flex; gap: 10px; margin-top: 16px; }
+        .btn-solve {
             flex: 1;
-            padding: 15px 30px;
-            font-size: 1.1em;
-            font-weight: 600;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
             border: none;
             border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
         }
-
-        .solve-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .solve-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .solve-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .clear-btn {
-            background: #f5f5f5;
-            color: #333;
-        }
-
-        .clear-btn:hover {
-            background: #e0e0e0;
-        }
+        .btn-solve:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(102,126,234,0.4); }
+        .btn-solve:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-clear { padding: 14px 24px; background: #f0f0f0; color: #555; border: none; border-radius: 12px; cursor: pointer; font-size: 1em; }
+        .btn-clear:hover { background: #e0e0e0; }
 
         .result {
-            margin-top: 40px;
-            padding: 25px;
+            margin-top: 30px;
+            padding: 22px;
             background: #f9f9f9;
             border-radius: 12px;
             border-left: 4px solid #667eea;
             display: none;
+            animation: fadeIn 0.3s ease;
         }
+        .result.show { display: block; }
+        .result.err-box { background: #fff0f0; border-left-color: #e55; }
+        .result h2 { color: #667eea; margin-bottom: 12px; }
+        .result.err-box h2 { color: #e55; }
+        .result p { color: #444; line-height: 1.8; white-space: pre-wrap; word-wrap: break-word; }
 
-        .result.show {
-            display: block;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .result h2 {
-            color: #667eea;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-
-        .result p {
-            color: #555;
-            line-height: 1.8;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-size: 0.95em;
-        }
-
-        .error {
-            background: #fee;
-            border-left-color: #f66;
-            color: #c33;
-        }
-
-        .error h2 {
-            color: #c33;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
         .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
+            display: inline-block; width: 18px; height: 18px;
+            border: 3px solid rgba(255,255,255,0.4);
+            border-top-color: white;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
-            vertical-align: middle;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px; vertical-align: middle;
         }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .info {
-            background: #f0f7ff;
-            border: 1px solid #b3d9ff;
+        .status-bar {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
             border-radius: 8px;
-            padding: 15px;
-            color: #004085;
-            font-size: 0.95em;
-            margin-bottom: 20px;
+            padding: 10px 14px;
+            font-size: 0.9em;
+            color: #856404;
+            margin-bottom: 14px;
+            display: none;
         }
+        .status-bar.show { display: block; }
 
         @media (max-width: 600px) {
-            .container {
-                padding: 25px;
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            .api-key-input-group {
-                flex-direction: column;
-            }
+            .container { padding: 22px; }
+            h1 { font-size: 1.8em; }
+            .btns { flex-direction: column; }
+            .api-row { flex-direction: column; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🎓 Решатель Задач</h1>
-            <p>Напишите задачу и получите решение за секунды</p>
+<div class="container">
+    <h1>🎓 Решатель Задач</h1>
+    <p class="subtitle">Захвати экран или напиши задачу — решу за секунды</p>
+
+    <div class="api-box">
+        <h3>🔑 Groq API Ключ</h3>
+        <p style="font-size:0.9em;color:#666">Бесплатный ключ: <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a></p>
+        <div class="api-row">
+            <input type="password" id="apiKey" placeholder="gsk_...">
+            <button class="btn-save" onclick="saveKey()">Сохранить</button>
         </div>
-
-        <!-- API Key Section -->
-        <div class="api-key-section">
-            <h3>🔑 Groq API Ключ</h3>
-            <p>Получить бесплатный ключ: <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a></p>
-            <div class="api-key-input-group">
-                <input type="password" id="apiKeyInput" placeholder="Вставьте ваш Groq API ключ (gsk_...)">
-                <button id="saveKeyBtn" class="api-btn">Сохранить</button>
-                <button id="clearKeyBtn" class="api-btn">Очистить</button>
-            </div>
-            <div id="keyStatus"></div>
-        </div>
-
-        <div class="info">
-            <strong>💡 Подсказка:</strong>
-            Вводите задачу или захватите экран - решу за 2-5 секунд!
-        </div>
-
-        <form id="taskForm">
-            <div class="form-group">
-                <label for="taskInput">Введите задачу:</label>
-                <textarea
-                    id="taskInput"
-                    placeholder="Например: Решить уравнение: 2x + 5 = 13&#10;&#10;Или: Найти площадь прямоугольника со сторонами 5см и 8см&#10;&#10;Или: Написать синоним слова 'быстро'"
-                    required></textarea>
-            </div>
-
-            <div class="button-group">
-                <button type="submit" class="solve-btn" id="solveBtn">
-                    🧠 Решить задачу
-                </button>
-                <button type="button" class="clear-btn" onclick="clearForm()">
-                    ✕ Очистить
-                </button>
-            </div>
-        </form>
-
-        <div class="result" id="result">
-            <h2>✅ Решение:</h2>
-            <p id="resultText"></p>
-        </div>
+        <div id="keyMsg"></div>
     </div>
 
-    <script>
-        const GROQ_API = "https://api.groq.com/openai/v1/chat/completions";
+    <button class="capture-btn" id="captureBtn" onclick="captureScreen()">
+        🖥️ Захватить экран и распознать задачу
+    </button>
 
-        // DOM элементы
-        const form = document.getElementById('taskForm');
-        const taskInput = document.getElementById('taskInput');
-        const solveBtn = document.getElementById('solveBtn');
-        const result = document.getElementById('result');
-        const resultText = document.getElementById('resultText');
-        const apiKeyInput = document.getElementById('apiKeyInput');
-        const saveKeyBtn = document.getElementById('saveKeyBtn');
-        const clearKeyBtn = document.getElementById('clearKeyBtn');
-        const keyStatus = document.getElementById('keyStatus');
+    <div class="status-bar" id="statusBar"></div>
 
-        // Загрузить ключ при загрузке страницы
-        window.addEventListener('load', () => {
-            const savedKey = localStorage.getItem('groqApiKey');
-            if (savedKey) {
-                apiKeyInput.value = savedKey;
-                updateKeyStatus('✅ Ключ загружен из памяти', 'success');
-            }
-        });
+    <div>
+        <label for="taskInput">Задача:</label>
+        <textarea id="taskInput" placeholder="Или введите задачу вручную..."></textarea>
+    </div>
 
-        // Сохранить ключ
-        saveKeyBtn.addEventListener('click', () => {
-            const key = apiKeyInput.value.trim();
-            if (!key) {
-                updateKeyStatus('❌ Введите API ключ', 'error');
-                return;
-            }
-            if (!key.startsWith('gsk_')) {
-                updateKeyStatus('❌ Ключ должен начинаться с gsk_', 'error');
-                return;
-            }
-            localStorage.setItem('groqApiKey', key);
-            updateKeyStatus('✅ Ключ сохранен!', 'success');
-        });
+    <div class="btns">
+        <button class="btn-solve" id="solveBtn" onclick="solve()">🧠 Решить</button>
+        <button class="btn-clear" onclick="clearAll()">✕ Очистить</button>
+    </div>
 
-        // Очистить ключ
-        clearKeyBtn.addEventListener('click', () => {
-            apiKeyInput.value = '';
-            localStorage.removeItem('groqApiKey');
-            keyStatus.textContent = '';
-            keyStatus.className = '';
-        });
+    <div class="result" id="result">
+        <h2>✅ Решение:</h2>
+        <p id="resultText"></p>
+    </div>
+</div>
 
-        function updateKeyStatus(message, type) {
-            keyStatus.textContent = message;
-            keyStatus.className = type;
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
+    const GROQ = "https://api.groq.com/openai/v1/chat/completions";
+
+    // Загрузить ключ из памяти
+    window.onload = () => {
+        const k = localStorage.getItem('groq_key');
+        if (k) {
+            document.getElementById('apiKey').value = k;
+            showKeyMsg('✅ Ключ загружен', 'ok');
         }
+    };
 
-        // Получить ключ
-        function getApiKey() {
-            return localStorage.getItem('groqApiKey') || '';
-        }
+    function saveKey() {
+        const k = document.getElementById('apiKey').value.trim();
+        if (!k.startsWith('gsk_')) { showKeyMsg('❌ Ключ должен начинаться с gsk_', 'err'); return; }
+        localStorage.setItem('groq_key', k);
+        showKeyMsg('✅ Ключ сохранён!', 'ok');
+    }
 
-        // Решить задачу
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    function showKeyMsg(msg, type) {
+        const el = document.getElementById('keyMsg');
+        el.textContent = msg;
+        el.className = type;
+    }
 
-            const apiKey = getApiKey();
-            if (!apiKey) {
-                alert('❌ Пожалуйста, сначала добавьте API ключ');
-                apiKeyInput.focus();
-                return;
-            }
+    function setStatus(msg) {
+        const bar = document.getElementById('statusBar');
+        bar.textContent = msg;
+        bar.className = msg ? 'status-bar show' : 'status-bar';
+    }
 
-            const task = taskInput.value.trim();
-            if (!task) {
-                alert('Пожалуйста, введите задачу');
-                return;
-            }
+    // Захват экрана через getDisplayMedia
+    async function captureScreen() {
+        const btn = document.getElementById('captureBtn');
+        try {
+            setStatus('⏳ Выберите экран или окно для захвата...');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>Ожидание...';
 
-            solveBtn.disabled = true;
-            solveBtn.innerHTML = '<span class="spinner"></span>Решаю...';
-            result.classList.remove('show', 'error');
+            // Запрос на захват экрана
+            const stream = await navigator.mediaDevices.getDisplayMedia({
+                video: { mediaSource: 'screen' }
+            });
 
-            try {
-                const response = await fetch(GROQ_API, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
-                    },
-                    body: JSON.stringify({
-                        model: 'llama-3.1-8b-instant',
-                        messages: [
-                            {
-                                role: 'user',
-                                content: `Реши эту задачу на русском языке кратко:\n\n${task}\n\nДай пошаговое решение и ответ.`
-                            }
-                        ],
-                        max_tokens: 2048
-                    })
-                });
+            setStatus('📸 Делаю снимок...');
 
-                if (!response.ok) {
-                    throw new Error(`Ошибка API: ${response.statusText}`);
+            // Снять кадр через video + canvas
+            const video = document.createElement('video');
+            video.srcObject = stream;
+            await video.play();
+
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+
+            // Остановить захват
+            stream.getTracks().forEach(t => t.stop());
+
+            setStatus('🔤 Распознаю текст...');
+
+            // OCR через Tesseract.js
+            const { data: { text } } = await Tesseract.recognize(canvas, 'rus+eng', {
+                logger: m => {
+                    if (m.status === 'recognizing text') {
+                        setStatus(`🔤 Распознаю текст... ${Math.round(m.progress * 100)}%`);
+                    }
                 }
+            });
 
-                const data = await response.json();
-                const solution = data.choices[0].message.content;
-
-                result.classList.add('show');
-                resultText.textContent = solution;
-
-            } catch (error) {
-                result.classList.add('show', 'error');
-                result.querySelector('h2').textContent = '❌ Ошибка';
-                resultText.textContent = `Ошибка: ${error.message}\n\nПроверьте API ключ и интернет.`;
-            } finally {
-                solveBtn.disabled = false;
-                solveBtn.innerHTML = '🧠 Решить задачу';
+            const cleaned = text.trim();
+            if (!cleaned) {
+                setStatus('⚠️ Текст не распознан. Попробуйте ещё раз.');
+            } else {
+                document.getElementById('taskInput').value = cleaned;
+                setStatus('✅ Текст распознан! Нажмите "Решить"');
             }
-        });
 
-        function clearForm() {
-            taskInput.value = '';
-            result.classList.remove('show', 'error');
-            taskInput.focus();
+        } catch (e) {
+            if (e.name === 'NotAllowedError') {
+                setStatus('❌ Доступ к экрану запрещён. Разрешите в браузере.');
+            } else {
+                setStatus('❌ Ошибка: ' + e.message);
+            }
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '🖥️ Захватить экран и распознать задачу';
         }
+    }
 
-        taskInput.focus();
-    </script>
+    // Решить задачу
+    async function solve() {
+        const key = localStorage.getItem('groq_key') || document.getElementById('apiKey').value.trim();
+        if (!key) { alert('❌ Сначала добавьте API ключ!'); return; }
+
+        const task = document.getElementById('taskInput').value.trim();
+        if (!task) { alert('Введите задачу!'); return; }
+
+        const btn = document.getElementById('solveBtn');
+        const result = document.getElementById('result');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span>Решаю...';
+        result.className = 'result';
+
+        try {
+            const res = await fetch(GROQ, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + key
+                },
+                body: JSON.stringify({
+                    model: 'llama-3.1-8b-instant',
+                    max_tokens: 2048,
+                    messages: [{
+                        role: 'user',
+                        content: 'Реши задачу на русском языке, дай пошаговое решение и ответ:\n\n' + task
+                    }]
+                })
+            });
+
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.error?.message || res.statusText);
+            }
+
+            const data = await res.json();
+            document.getElementById('resultText').textContent = data.choices[0].message.content;
+            result.className = 'result show';
+            setStatus('');
+
+        } catch (e) {
+            document.getElementById('resultText').textContent = 'Ошибка: ' + e.message;
+            result.className = 'result show err-box';
+            result.querySelector('h2').textContent = '❌ Ошибка';
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '🧠 Решить';
+        }
+    }
+
+    function clearAll() {
+        document.getElementById('taskInput').value = '';
+        document.getElementById('result').className = 'result';
+        setStatus('');
+    }
+</script>
 </body>
 </html>
