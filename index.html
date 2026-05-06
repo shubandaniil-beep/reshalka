@@ -160,6 +160,7 @@
         <div class="api-row">
             <input type="password" id="apiKey" placeholder="gsk_...">
             <button class="btn-save" onclick="saveKey()">Сохранить</button>
+            <button class="btn-save" style="background:#28a745" onclick="testKey()">Тест</button>
         </div>
         <div id="keyMsg"></div>
     </div>
@@ -204,6 +205,24 @@
         if (!k.startsWith('gsk_')) { showKeyMsg('❌ Ключ должен начинаться с gsk_', 'err'); return; }
         localStorage.setItem('groq_key', k);
         showKeyMsg('✅ Ключ сохранён!', 'ok');
+    }
+
+    async function testKey() {
+        const k = document.getElementById('apiKey').value.trim() || localStorage.getItem('groq_key');
+        if (!k) { showKeyMsg('❌ Введите ключ', 'err'); return; }
+        showKeyMsg('⏳ Проверяю...', 'ok');
+        try {
+            const res = await fetch(GROQ, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + k },
+                body: JSON.stringify({ model: 'llama-3.1-8b-instant', max_tokens: 10, messages: [{ role: 'user', content: '2+2' }] })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error?.message || res.statusText);
+            showKeyMsg('✅ Ключ работает! Ответ: ' + data.choices[0].message.content, 'ok');
+        } catch (e) {
+            showKeyMsg('❌ Ошибка: ' + e.message, 'err');
+        }
     }
 
     function showKeyMsg(msg, type) {
