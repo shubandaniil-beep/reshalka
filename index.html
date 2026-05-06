@@ -327,18 +327,20 @@
                 })
             });
 
+            const data = await res.json();
+
             if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.error?.message || res.statusText);
+                const msg = data.error?.message || data.error?.code || JSON.stringify(data);
+                throw new Error(`HTTP ${res.status}: ${msg}`);
             }
 
-            const data = await res.json();
             document.getElementById('resultText').textContent = data.choices[0].message.content;
+            result.querySelector('h2').textContent = '✅ Решение:';
             result.className = 'result show';
             setStatus('');
 
         } catch (e) {
-            document.getElementById('resultText').textContent = 'Ошибка: ' + e.message;
+            document.getElementById('resultText').textContent = e.message;
             result.className = 'result show err-box';
             result.querySelector('h2').textContent = '❌ Ошибка';
         } finally {
